@@ -6,7 +6,7 @@ from rest_framework import serializers, exceptions
 USER_MODEL = get_user_model()
 
 
-class RegistrationSerializer(serializers.ModelSerializer):
+class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     password_repeat = serializers.CharField(write_only=True)
 
@@ -21,10 +21,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         if password != password_repeat:
             raise serializers.ValidationError('Passwords do not match!')
 
-#         try:
-#             password_validation.validate_password(password)
-#         except Exception as e:
-#             raise serializers.ValidationError(e)
+        #         try:
+        #             password_validation.validate_password(password)
+        #         except Exception as e:
+        #             raise serializers.ValidationError(e)
 
         hashed_password = make_password(password)
         validated_data['password'] = hashed_password
@@ -73,3 +73,9 @@ class UpdatePasswordSerializer(serializers.Serializer):
         instance.password = make_password(validated_data['new_password'])
         instance.save()
         return instance
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = USER_MODEL
+        fields = ['id', 'username', 'first_name', 'last_name', 'email']

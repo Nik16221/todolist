@@ -101,13 +101,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
+
+STATIC_URL = 'static/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -121,3 +127,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Создание пользователя по модели
 AUTH_USER_MODEL = 'core.User'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']
+SOCIAL_AUTH_VK_OAUTH2_KEY = env.str('SOCIAL_AUTH_VK_OAUTH2_KEY')
+SOCIAL_AUTH_VK_OAUTH2_SECRET = env.str('SOCIAL_AUTH_VK_OAUTH2_SECRET')
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/logged-in/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/login-error/'
